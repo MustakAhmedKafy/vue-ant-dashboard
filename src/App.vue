@@ -7,3 +7,10 @@ const route = useRoute()
 <template>
   <Layout v-if="route.path != '/login'"></Layout>
 </template>
+
+<style>
+.ant-dropdown-menu-title-content {
+  display: flex !important;
+  align-items: center !important;
+}
+</style>
