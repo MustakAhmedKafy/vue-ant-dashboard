@@ -1,7 +1,33 @@
 <script setup>
 import { ref } from 'vue'
-import { CaretDownOutlined, LoginOutlined  } from '@ant-design/icons-vue';
+import { CaretDownOutlined, LoginOutlined } from '@ant-design/icons-vue'
 const value = ref('')
+const isFullScreen = ref(false)
+const toggleFullScreen = () => {
+  isFullScreen.value = !isFullScreen.value
+  const element = document.documentElement
+  if (isFullScreen.value) {
+    if (element.requestFullscreen) {
+      element.requestFullscreen()
+    } else if (element.mozRequestFullScreen) {
+      element.mozRequestFullScreen()
+    } else if (element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen()
+    } else if (element.msRequestFullscreen) {
+      element.msRequestFullscreen()
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen()
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen()
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen()
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen()
+    }
+  }
+}
 </script>
 
 <template>
@@ -14,19 +40,31 @@ const value = ref('')
       justify-content: space-between;
     "
   >
-    <a-space>
-      <a-breadcrumb style="margin: 16px 0">
-        <a-breadcrumb-item>User</a-breadcrumb-item>
-        <a-breadcrumb-item>Bill</a-breadcrumb-item>
-      </a-breadcrumb>
-    </a-space>
-    <a-space>
-      <a-menu>
-        <a-space direction="vertical">
-          <a-input v-model:value="value" placeholder="Search" />
-        </a-space>
-      </a-menu>
+    <a-menu>
+      <a-space direction="vertical">
+        <a-input v-model:value="value" placeholder="Search" />
+      </a-space>
+    </a-menu>
 
+    <a-space>
+      <a-menu
+       
+        style=""
+        >
+        <a-button  @click="toggleFullScreen" style="border: 0px; display: flex; align-items: center; margin-right: 10px; box-shadow: none;">
+          <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          fill="currentColor"
+          class="bi bi-fullscreen"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5M.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5"
+          /></svg>
+        </a-button>
+        </a-menu>
       <a-menu>
         <a-dropdown class="admin-dropdown" placement="bottom">
           <template #overlay>
@@ -67,7 +105,7 @@ const value = ref('')
               </a-menu-item>
               <a-divider class="divider" />
               <a-menu-item key="lg" style="padding-right: 30px; padding-bottom: 10px">
-               <LoginOutlined />
+                <LoginOutlined />
                 <span style="padding-left: 8px" class="gray-menu-item">Log out</span>
               </a-menu-item>
             </a-menu>
@@ -75,23 +113,31 @@ const value = ref('')
           <div>
             <a-avatar focus :size="44"> </a-avatar>
             <span class="gray-menu-item" style="margin-left: 8px"
-              >Mustak <CaretDownOutlined /></span
-            >
+              >Mustak <CaretDownOutlined
+            /></span>
           </div>
-        </a-dropdown></a-menu
-      >
+        </a-dropdown>
+      </a-menu>
     </a-space>
   </a-layout-header>
 </template>
-
 <style scoped>
 .ant-layout-header {
   padding-inline: 60px !important;
 }
+
 .ant-divider-horizontal {
   margin: 5px 0px !important;
 }
+
 .ant-menu-light.ant-menu-root.ant-menu-vertical {
   border: none;
+}
+
+/* Add media query for responsiveness */
+@media screen and (max-width: 768px) {
+  .ant-layout-header {
+    padding-inline: 16px !important; /* Adjust padding for smaller screens */
+  }
 }
 </style>
