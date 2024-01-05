@@ -3,7 +3,7 @@
     <SideBar />
     <a-layout>
       <TopHeader />
-      <a-layout-content style="margin: 0 16px"> Hellow World </a-layout-content>
+      <a-layout-content style="margin: 0 16px"> <HomeContent/> </a-layout-content>
       <a-layout-footer style="text-align: center">
         Ant Design ©2018 Created by Ant UED
       </a-layout-footer>
@@ -13,6 +13,7 @@
 <script setup>
 import SideBar from '../layout/SideBar.vue'
 import TopHeader from '../layout/TopHeader.vue'
+import HomeContent from '../../views/HomeContent.vue';
 </script>
 <style scoped>
 #components-layout-demo-side .logo {
@@ -26,5 +27,8 @@ import TopHeader from '../layout/TopHeader.vue'
 }
 [data-theme='dark'] .site-layout .site-layout-background {
   background: #141414;
+}
+main{
+  margin: 16px!important;
 }
 </style>

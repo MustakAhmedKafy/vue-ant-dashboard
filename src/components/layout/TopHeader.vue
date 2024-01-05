@@ -47,9 +47,9 @@ const toggleFullScreen = () => {
     "
   >
     <a-menu>
-      <a-space direction="vertical">
-        <a-input v-model:value="value" placeholder="Search" />
-      </a-space>
+      <template style="display: flex; align-items: center">
+        <a-input-search v-model:value="value" placeholder="Search" />
+      </template>
     </a-menu>
 
     <a-space>
