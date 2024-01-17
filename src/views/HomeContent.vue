@@ -1,15 +1,111 @@
 <script setup>
-import { ref } from "vue";
-import { ArrowUpOutlined } from '@ant-design/icons-vue';
+import { ref, computed, reactive } from 'vue'
+import { ArrowUpOutlined } from '@ant-design/icons-vue'
+
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    filters: [
+      {
+        text: 'Joe',
+        value: 'Joe',
+      },
+      {
+        text: 'Category 1',
+        value: 'Category 1',
+      },
+      {
+        text: 'Category 2',
+        value: 'Category 2',
+      },
+    ],
+    filterMode: 'tree',
+    filterSearch: true,
+    onFilter: (value, record) => record.name.startsWith(value),
+    width: '30%',
+  },
+  {
+    title: 'Age',
+    dataIndex: 'age',
+    sorter: (a, b) => a.age - b.age,
+  },
+  {
+    title: 'Address',
+    dataIndex: 'address',
+    filters: [
+      {
+        text: 'London',
+        value: 'London',
+      },
+      {
+        text: 'New York',
+        value: 'New York',
+      },
+    ],
+    onFilter: (value, record) => record.address.startsWith(value),
+    filterSearch: (input, filter) => filter.value.indexOf(input) > -1,
+    width: '40%',
+  },
+];
+const data = [
+  {
+    key: '1',
+    name: 'John Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park',
+  },
+  {
+    key: '2',
+    name: 'Jim Green',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+  },
+  {
+    key: '3',
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sidney No. 1 Lake Park',
+  },
+  {
+    key: '4',
+    name: 'Jim Red',
+    age: 32,
+    address: 'London No. 2 Lake Park',
+  },
+];
+function onChange(pagination, filters, sorter, extra) {
+  console.log('params', pagination, filters, sorter, extra);
+}
+
+
+const state = reactive({
+  selectedRowKeys: [],
+  // Check here to configure the default column
+  loading: false,
+});
+const hasSelected = computed(() => state.selectedRowKeys.length > 0);
+const start = () => {
+  state.loading = true;
+  // ajax request after empty completing
+  setTimeout(() => {
+    state.loading = false;
+    state.selectedRowKeys = [];
+  }, 1000);
+};
+const onSelectChange = selectedRowKeys => {
+  console.log('selectedRowKeys changed: ', selectedRowKeys);
+  state.selectedRowKeys = selectedRowKeys;
+};
+
 
 const cards = ref([
-      {
-        title: 'TOTAL TRAFFIC',
-        class: 'card',
-        value: '350,897',
-        iconClass: 'card-icon card-icon1',
-    icon:
-     ` <svg
+  {
+    title: 'TOTAL TRAFFIC',
+    class: 'card',
+    value: '350,897',
+    iconClass: 'card-icon card-icon1',
+    icon: ` <svg
               fill="#ffffff"
               height="18px"
               width="18px"
@@ -46,16 +142,16 @@ const cards = ref([
                 </g>
               </g>
             </svg>`,
-        color: '#2dce89',
-        percentage: '3.48%',
-        since: 'Since last month',
-      },
-      {
-        title: 'TOTAL TRAFFIC',
-        class: 'card',
-        value: '2,356',
-        iconClass: 'card-icon card-icon2',
-        icon: ` <svg
+    color: '#2dce89',
+    percentage: '3.48%',
+    since: 'Since last month'
+  },
+  {
+    title: 'TOTAL TRAFFIC',
+    class: 'card',
+    value: '2,356',
+    iconClass: 'card-icon card-icon2',
+    icon: ` <svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"
               height="18"
@@ -67,16 +163,16 @@ const cards = ref([
                 d="M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778zM8.5.015V7.5h7.485A8 8 0 0 0 8.5.015"
               />
             </svg>`,
-        color: '#2dce89',
-        percentage: '12.18%',
-        since: 'Since last month',
-      },
-      {
-        title: 'SALES',
-        class: 'card',
-        value: '924',
-        iconClass: 'card-icon card-icon3',
-        icon:  `<svg
+    color: '#2dce89',
+    percentage: '12.18%',
+    since: 'Since last month'
+  },
+  {
+    title: 'SALES',
+    class: 'card',
+    value: '924',
+    iconClass: 'card-icon card-icon3',
+    icon: `<svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"
               height="18"
@@ -96,16 +192,16 @@ const cards = ref([
               />
               <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567" />
             </svg>`,
-        color: '#e81616',
-        percentage: '5.72%',
-        since: 'Since last month',
-      },
-      {
-        title: 'PERFORMANCE',
-        class: 'card',
-        value: '54.8%',
-        iconClass: 'card-icon card-icon4',
-        icon: ` <svg
+    color: '#e81616',
+    percentage: '5.72%',
+    since: 'Since last month'
+  },
+  {
+    title: 'PERFORMANCE',
+    class: 'card',
+    value: '54.8%',
+    iconClass: 'card-icon card-icon4',
+    icon: ` <svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"
               height="18"
@@ -117,82 +213,14 @@ const cards = ref([
                 d="M1 11a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm5-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1z"
               />
             </svg>`,
-        color: '#2dce89',
-        percentage: '49.65%',
-        since: 'Since last month',
-      },
-    ]);
+    color: '#2dce89',
+    percentage: '49.65%',
+    since: 'Since last month'
+  }
+])
+
 </script>
 <template>
-  <!-- <a-row :gutter="16">
-    <a-col :sm="6" :span="24">
-      <a-card class="card" title="TOTAL TRAFFIC" :bordered="false">
-        <template style="display: flex; justify-content: space-between">
-          <p style="font-size: 18px; font-weight: bold">350,897</p>
-          <p class="card-icon card-icon1">
-            
-          </p>
-        </template>
-        <div>
-          <span style="color: #2dce89; padding-right: 5px"><ArrowUpOutlined /> 3.48%</span>
-          <span>Since last month</span>
-        </div>
-      </a-card>
-    </a-col>
-    <a-col :sm="6" :span="24">
-      <a-card class="card" title="TOTAL TRAFFIC" :bordered="false">
-        <template style="display: flex; justify-content: space-between">
-          <p style="font-size: 18px; font-weight: bold">2,356</p>
-          <p class="card-icon card-icon2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              fill="currentColor"
-              class="bi bi-pie-chart-fill"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778zM8.5.015V7.5h7.485A8 8 0 0 0 8.5.015"
-              />
-            </svg>
-          </p>
-        </template>
-        <div>
-          <span style="color: #2dce89; padding-right: 5px"><ArrowUpOutlined /> 12.18%</span>
-          <span>Since last month</span>
-        </div>
-      </a-card>
-    </a-col>
-    <a-col :sm="6" :span="24">
-      <a-card class="card" title="SALES" :bordered="false">
-        <template style="display: flex; justify-content: space-between">
-          <p style="font-size: 18px; font-weight: bold">924</p>
-          <p class="card-icon card-icon3">
-            
-          </p>
-        </template>
-        <div>
-          <span style="color: #e81616; padding-right: 5px"><ArrowUpOutlined /> 5.72%</span>
-          <span>Since last month</span>
-        </div>
-      </a-card>
-    </a-col>
-    <a-col :sm="6" :span="24">
-      <a-card class="card" title="PERFORMANCE" :bordered="false">
-        <template style="display: flex; justify-content: space-between">
-          <p style="font-size: 18px; font-weight: bold">54.8%</p>
-          <p class="card-icon card-icon4">
-           
-          </p>
-        </template>
-        <div>
-          <span style="color: #2dce89; padding-right: 5px"><ArrowUpOutlined /> 49,65%</span>
-          <span>Since last month</span>
-        </div>
-      </a-card>
-    </a-col>
-  </a-row> -->
   <a-row :gutter="16">
     <a-col v-for="(card, index) in cards" :key="index" :sm="6" :span="24">
       <a-card :class="card.class" :title="card.title" :bordered="false">
@@ -203,12 +231,32 @@ const cards = ref([
           </p>
         </template>
         <div>
-          <span :style="{ color: card.color, 'padding-right': '5px' }">
+          <span class="svg-icon" :style="{ color: card.color, 'padding-right': '5px' }">
             <ArrowUpOutlined /> {{ card.percentage }}
           </span>
           <span>{{ card.since }}</span>
         </div>
       </a-card>
+    </a-col>
+    <a-col :span="24">
+      <div style="margin-top: 20px;">
+        <div style="margin-bottom: 16px">
+          <a-button type="primary" :disabled="!hasSelected" :loading="state.loading" @click="start">
+            Reload
+          </a-button>
+          <span style="margin-left: 8px">
+            <template v-if="hasSelected">
+              {{ `Selected ${state.selectedRowKeys.length} items` }}
+            </template>
+          </span>
+        </div>
+        <a-table
+          :row-selection="{ selectedRowKeys: state.selectedRowKeys, onChange: onSelectChange }"
+          :columns="columns"
+          :data-source="data"
+          @change="onChange"
+        ></a-table>
+      </div>
     </a-col>
   </a-row>
 </template>
@@ -222,6 +270,11 @@ const cards = ref([
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+}
+
+.card-icon span {
+  position: absolute;
+  top: 48%;
 }
 
 .card-icon img {
